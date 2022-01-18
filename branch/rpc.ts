@@ -1,0 +1,21 @@
+import { serve } from 'https://deno.land/std/http/server.ts'
+import { respond } from 'https://deno.land/x/gentle_rpc/mod.ts'
+import { expandGlobSync } from 'https://deno.land/std/fs/mod.ts'
+
+let methods: any = {}
+
+for (const file of expandGlobSync('./*/**/*.ts')) {
+	const paths = file.path.split('/')
+	const module = paths[paths.length - 2]
+	const func = file.name.split('.')[0]
+
+	methods[`${module}.${func}`] = async (p: any) => {
+		console.log(`branch ${module}/${func} invoked`)
+
+		const fn = await import(`./${module}/${func}.ts`)
+		return fn.default(p)
+	}
+}
+
+serve((req) => respond(methods, req), { port: 9000 })
+console.log('Listening on http://localhost:9000')
