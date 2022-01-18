@@ -2,11 +2,9 @@ import { Helmet } from 'helmet'
 import React, { Suspense } from 'react'
 import call from 'call'
 import useSWR, { SWRConfig } from 'swr'
-import cache from 'ultra/cache'
 
 const opts = {
 	suspense: true,
-	provider: () => cache(),
 	fetcher: (resource, init) => call(resource, init).then(({ res }) => res),
 }
 
@@ -20,7 +18,7 @@ const App = () => {
 	return (
 		<SWRConfig value={opts}>
 			<Helmet>
-				<title>ULTRA</title>
+				<title>Deno Next</title>
 			</Helmet>
 			<main>
 				<Suspense fallback={<div>Loading...</div>}>

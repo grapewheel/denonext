@@ -1,1 +1,1 @@
-yeah, from deno!
+yeah, from deno
