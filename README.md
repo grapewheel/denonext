@@ -1,6 +1,6 @@
 # Deno Next
 
-**IN DEVELOPMENT!!! **  
+_IN DEVELOPMENT!!! _  
 No package.json, No Bundle, No Fetch，Just Import！  
 基于 [deno](https://www.denojs.cn) 的优雅简约的 Serverless 总分线架构，让一切如此简单！
 
