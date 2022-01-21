@@ -1,5 +1,7 @@
 import { Application, Router, helpers } from 'https://deno.land/x/oak/mod.ts'
 import { createRemote } from 'https://deno.land/x/gentle_rpc/mod.ts'
+import msgpack from 'https://esm.sh/msgpack-lite'
+import { decode } from 'https://deno.land/std/encoding/base64.ts'
 
 const app = new Application()
 const branch = createRemote('http://localhost:9000')
@@ -7,7 +9,7 @@ const branch = createRemote('http://localhost:9000')
 const router = new Router()
 router.get('/:m/:f.:x(ts|js)', async (ctx) => {
 	const { m, f, x } = ctx.params
-	const p = helpers.getQuery(ctx)
+	console.info(`master ${m}/${f} invoked`)
 
 	if (m === 'tools' && f === 'call') {
 		const buf = Deno.readFileSync(`./tools/call.${x}`)
@@ -38,10 +40,22 @@ router.get('/:m/:f.:x(ts|js)', async (ctx) => {
 			)
 
 		ctx.response.body = async () => {
-			console.log('master invoked')
+			try {
+				let p = helpers.getQuery(ctx)
+				const data = p.data ? msgpack.decode(decode(p.data)) : {}
 
-			const res = await branch.call(`${m}.${f}`, p)
-			if (typeof res === 'string') return `export const res = '${res}'`
+				const res = await branch.call(`${m}.${f}`, data)
+
+				const buff = msgpack.encode(res)
+				let arr = []
+				for (let b of buff.values()) {
+					arr.push(b)
+				}
+
+				return `export const res = [${arr}]`
+			} catch (e) {
+				throw e
+			}
 		}
 	}
 })

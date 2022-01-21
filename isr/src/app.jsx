@@ -5,13 +5,19 @@ import useSWR, { SWRConfig } from 'swr'
 
 const opts = {
 	suspense: true,
-	fetcher: (resource, init) => call(resource, init).then(({ res }) => res),
+	fetcher: (resource, init) => call(resource, init).then((res) => res),
 }
 
 const Hello = () => {
-	const { data } = useSWR(['user.hello', { who: 'Grape' }])
+	const { data } = useSWR(['user.list', { page: 1 }])
 
-	return <h1>{data}</h1>
+	return (
+		<ul>
+			{data.map((i) => (
+				<li>{i.mobile}</li>
+			))}
+		</ul>
+	)
 }
 
 const App = () => {

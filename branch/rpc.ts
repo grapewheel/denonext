@@ -4,16 +4,21 @@ import { expandGlobSync } from 'https://deno.land/std/fs/mod.ts'
 
 let methods: any = {}
 
-for (const file of expandGlobSync('./*/**/*.ts')) {
+for (const file of expandGlobSync('./functions/*/**/*.ts')) {
 	const paths = file.path.split('/')
 	const module = paths[paths.length - 2]
 	const func = file.name.split('.')[0]
 
-	methods[`${module}.${func}`] = async (p: any) => {
+	methods[`${module}.${func}`] = async (p?: any) => {
 		console.log(`branch ${module}/${func} invoked`)
 
-		const fn = await import(`./${module}/${func}.ts`)
-		return fn.default(p)
+		try {
+			const fn = await import(`./functions/${module}/${func}.ts`)
+			return await fn.default(p)
+		} catch (e) {
+			console.error(`branch ${module}/${func}`, e)
+			throw e
+		}
 	}
 }
 
