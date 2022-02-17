@@ -1,4 +1,5 @@
 {
 	"deno.enable": true,
-	"deno.importMap": "./isr/importmap.json"
+	"deno.importMap": "./web/import_dev.json",
+	"deno.config": "./deno.json"
 }

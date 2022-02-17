@@ -1,6 +1,7 @@
 import { serve } from 'https://deno.land/std/http/server.ts'
 import { respond } from 'https://deno.land/x/gentle_rpc/mod.ts'
 import { expandGlobSync } from 'https://deno.land/std/fs/mod.ts'
+import './services/db.ts'
 
 let methods: any = {}
 

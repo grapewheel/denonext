@@ -1,0 +1,11 @@
+{
+	"imports": {
+		"react": "https://esm.sh/react",
+		"react-dom": "https://esm.sh/react-dom",
+		"react-dom/server": "https://esm.sh/react-dom/server",
+		"react-helmet": "https://esm.sh/react-helmet-async?deps=react",
+		"wouter": "https://esm.sh/wouter?deps=react",
+		"swr": "https://esm.sh/swr?deps=react",
+		"call": "http://localhost:8000/tools/call.js"
+	}
+}
